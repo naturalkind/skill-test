@@ -7,8 +7,8 @@ import requests
 from datetime import date, timedelta, datetime
 
 
-chat_ID = "-1001478906055" 
-acc_key = "1073537741:AAHMOnAD6zAdsM1E6AyPnqs3BYP3QTh0PC0" 
+chat_ID = "" 
+acc_key = "" 
 
 def get_ls():
         my_l = "https://api.exchangeratesapi.io/latest?base=USD"
