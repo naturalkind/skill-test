@@ -43,7 +43,7 @@ def send_function(data_json):
                  op += "Пример: <strong>/exc</strong> XX.XX USD to RUB, где XX.XX - ваша сумма\n"
                  op += "<strong>/hist</strong> - график валют по отношнию друг к другу\n"
                  op += "Пример: <strong>/hist</strong> USD RUB X - где X колличество дней"
-                 my_l = "https://api.telegram.org/bot1073537741:AAHMOnAD6zAdsM1E6AyPnqs3BYP3QTh0PC0/sendMessage?chat_id="+chat_ID+"&text="+str(op)+"&parse_mode=html"
+                 my_l = "https://api.telegram.org/bot"+acc_key+"/sendMessage?chat_id="+chat_ID+"&text="+str(op)+"&parse_mode=html"
                  r = requests.get(my_l)
                  
               ######################   
