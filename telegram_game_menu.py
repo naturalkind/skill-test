@@ -10,7 +10,7 @@ IDX_S = 0
 def del_mess(chat_ID, x):
                  params = {'chat_id': chat_ID, 'message_id':x}
                  #print (params)    
-                 my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/deleteMessage"
+                 my_l = "https://api.telegram.org/bot"+acc_key+"/deleteMessage"
                  r = requests.post(my_l, data=params).json()
                  print ("RESEND", r,  "\n")
         
@@ -19,7 +19,7 @@ def edit_mess(chat_ID, x):
                  MES = "Запросы с сервера "+str(IDX_S)
                  params = {'chat_id': chat_ID, 'message_id':x, 'text':MES}
                  #print (params)    
-                 my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/editMessageText"
+                 my_l = "https://api.telegram.org/bot"+acc_key+"/editMessageText"
                  r = requests.post(my_l, data=params).json()
                  print ("edit_mess", r,  "\n")
         
@@ -27,13 +27,13 @@ def error_send(chat_ID, U_NAME):
              op = "Добрый день!\n"
              op += "{}\n".format(U_NAME)
              params = {'chat_id': chat_ID, 'text':op, "parse_mode":'HTML'}
-             my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/sendMessage"
+             my_l = "https://api.telegram.org/bot"+acc_key+"/sendMessage"
              r = requests.get(my_l, data=params).json()
              #print ("Ops, Error", r,  "\n")
              return r['result']
    
 def sendPhoto(chat_ID):
-     my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/sendPhoto"
+     my_l = "https://api.telegram.org/bot"+acc_key+"/sendPhoto"
      files = {'photo': open('robots-AI.jpg', 'rb')}  
      params = {'chat_id' : chat_ID, 'caption':'Начнем играть?', "parse_mode":"html"}
      r= requests.post(my_l, files=files, data=params).json()
@@ -41,26 +41,26 @@ def sendPhoto(chat_ID):
      return r 
              
 def get_me():
-     my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/getMe"           
+     my_l = "https://api.telegram.org/bot"+acc_key+"/getMe"           
      r = requests.get(my_l).json()
      print ("Ops, Error", r,  "\n")
      
 def get_chat(chat_ID):
      params = {'chat_id': chat_ID}
-     my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/getChat"           
+     my_l = "https://api.telegram.org/bot"+acc_key+"/getChat"           
      r = requests.get(my_l, data=params).json()
      print ("Ops, Error", r,  "\n")     
      
 def tryDelete(chat_ID, x):
      params = {'chat_id': chat_ID, 'message_id':x}
-     my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/deleteMessage"
+     my_l = "https://api.telegram.org/bot"+acc_key+"/deleteMessage"
      r = requests.post(my_l, data=params).json()
      #print (r)
      return r
      
 def sendLocation(chat_ID):
      params = {'chat_id': chat_ID}
-     my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/sendLocation"
+     my_l = "https://api.telegram.org/bot"+acc_key+"/sendLocation"
      r = requests.post(my_l, data=params).json()
      #print ("RESEND", r,  "\n")
      return r     
@@ -74,7 +74,7 @@ def Key1(chat_ID):
                  BT = json.dumps(BT)  
                  params = {'chat_id': chat_ID, 'text': "Hellow", "reply_markup":BT, "parse_mode":'HTML'}
                  #print (params)   
-                 my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/sendMessage"
+                 my_l = "https://api.telegram.org/bot"+acc_key+"/sendMessage"
                  r = requests.get(my_l, data=params).json()
                  print ("RESEND", r)
                  
@@ -82,7 +82,7 @@ def Key2(chat_ID):
                  BT = {"ReplyKeyboardMarkup":{"keyboard":[[{"KeyboardButton":{"text":"test"}}]]}}  
                  BT = json.dumps(BT)  
                  params = {'chat_id': chat_ID, 'text': "Hellow", "reply_markup":BT, "parse_mode":'HTML'}
-                 my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/sendMessage"
+                 my_l = "https://api.telegram.org/bot"+acc_key+"/sendMessage"
                  r = requests.get(my_l, data=params).json()
                  print ("RESEND", r)                 
      
@@ -118,27 +118,27 @@ def Key3(chat_ID, op = "Тест кнопок\n"):
                                 }]]}   
                  BT = json.dumps(BT)  
                  params = {'chat_id': chat_ID, 'text': op, "reply_markup":BT, "parse_mode":'HTML'}
-                 my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/sendMessage"
+                 my_l = "https://api.telegram.org/bot"+acc_key+"/sendMessage"
                  r = requests.get(my_l, data=params).json()
                  return r['result']
                  #print ("RESEND", r)   
                    
 def KeyFight(chat_ID, op = "Удар\n"):
                  params = {'chat_id': chat_ID, 'text': op, "reply_markup":json.dumps(BT_S), "parse_mode":'HTML'}
-                 my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/sendMessage"
+                 my_l = "https://api.telegram.org/bot"+acc_key+"/sendMessage"
                  r = requests.get(my_l, data=params).json()
                  return r['result']  
                  
 def edit_fight(chat_ID, mesg_ID, op = "Удар\n"):  
                  params = {'chat_id': chat_ID, 'message_id':mesg_ID, 'text': op, "reply_markup":json.dumps(BT_S), "parse_mode":'HTML'}
-                 my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/editMessageText"
+                 my_l = "https://api.telegram.org/bot"+acc_key+"/editMessageText"
                  r = requests.get(my_l, data=params).json()
                  #return r['result']                                 
 
 def edit_Key(chat_ID, mesg_ID, x):
                  MES = "Вы нажали кнопку: "+str(x)
                  params = {'chat_id': chat_ID, 'message_id':mesg_ID, 'text':MES, "reply_markup":json.dumps(BT), "parse_mode":'HTML'}
-                 my_l = "https://api.telegram.org/bot1227859397:AAHMyk5SibE7WXo4kYc78nxCjTyCOHxQdVk/editMessageText"
+                 my_l = "https://api.telegram.org/bot"+acc_key+"/editMessageText"  
                  r = requests.post(my_l, data=params).json()
                  #print ("edit_mess", r,  "\n")
                  
