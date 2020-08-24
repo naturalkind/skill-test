@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<h1>ЭТо чат</h1>
+<button type="submit" class="button lookFilled colorBrand grow" onclick="send()">OUT</buttom>
+</html>
+<script>
+var ws = new WebSocket("ws://178.158.131.41:8800/websocket");
+function send(){
+  ws.send(JSON.stringify({'user': 'FireUser', 'text': 'asas'}));
+}
+
+ws.onopen = function() {
+  var url = new URL(window.location.href);
+  var c = url.searchParams.get("name_id");
+  console.log("connection work", c);
+};
+ws.onmessage = function(data) {
+  //s_str = JSON.parse(data.data);
+  console.log(data.data);
+
+};
+
+
+
+function send(){
+	console.log("ok");
+	var http = new XMLHttpRequest();
+	http.open("GET", "http://178.158.131.41:8800/exit");
+	http.setRequestHeader("Content-type","application/json; charset=utf-8");
+	http.onreadystatechange = function (){
+		if(http.readyState == 4){
+		        window.location="/";
+		        //console.log(http.responseText);
+                        //document.getElementsByTagName('html')[0].innerHTML = http.responseText
+                        }};
+			http.send();
+		};
+</script>
+
+
+
+

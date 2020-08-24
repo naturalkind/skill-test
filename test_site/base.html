@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+ <head>
+  <meta charset="utf-8">
+  <title></title>
+ </head>
+ <body>
+     <div id="main">
+          <div id="LCollom">          
+             <button onclick="send()">жмакалка</button>
+             <button onclick="getUp()">Заканчиваю файл</button>
+          </div>
+          <div id="RCollom">
+             <div id="Content">
+                   {{items}}
+                   <div id="Message">
+                     <div id="test"></div>
+                     <textarea id="textArea"></textarea>
+                     <button onclick="sendMess()">Заканчиваю файл</button>
+                   </div>
+<!--                <img src="/robots-AI.jpg" style="max-width:900px;width:100%;display:block;margin:0 auto;">-->
+             </div>
+          </div>
+          
+          
+<!--          <h3>Получаем изображения с страници пользователя</h3>-->
+
+     </div>
+ </body>
+</html>
+
+<script>
+var ws = new WebSocket("ws://178.158.131.41:8800/websocket");
+<!--function send(){-->
+<!--  ws.send(JSON.stringify({"Process": "GetUser"}));-->
+<!--}-->
+
+ws.onopen = function() {
+  var url = new URL(window.location.href);
+  var c = url.searchParams.get("name_id");
+  console.log("connection work", c);
+};
+ws.onmessage = function(data) {
+  s_str = JSON.parse(data.data);
+  console.log(s_str);
+
+};
+//console.log(document.cookie);
+function sendMess(){
+        var chat_id = "";
+        var uid = 0;
+        var text = document.getElementById("textArea").value;
+        ws.send(JSON.stringify({"Process": "SendMess", "TextMess":text, "uid": uid, "chat_id":chat_id}));
+};
+
+
+
+function send(){
+	console.log("ok");
+	var http = new XMLHttpRequest();
+	http.open("GET", "http://178.158.131.41:8800/chat");
+	http.setRequestHeader("Content-type","application/json; charset=utf-8");
+        
+	http.onreadystatechange = function (){
+		if(http.readyState == 4){
+                        window.location="/chat";
+                        }};
+			http.send();
+		};
+		
+		
+function getUp(){
+	console.log("ok");
+	var http = new XMLHttpRequest();
+	http.open("GET", "http://178.158.131.41:8800/upload");
+	http.setRequestHeader("Content-type","application/json; charset=utf-8");
+        
+	http.onreadystatechange = function (){
+		if(http.readyState == 4){
+                        window.location="/upload";
+                        }};
+			http.send();
+		};		
+
+
+</script>
+
+
+<style>
+
+</style>
+

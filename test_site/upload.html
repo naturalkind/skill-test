@@ -1,0 +1,215 @@
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>загрузчик при помощи javascript/python </title>
+		
+		<script type="text/javascript" charset="utf-8">
+
+			window.addEventListener("load", Ready);
+			function Ready(){
+				if(window.File && window.FileReader){ //These are the necessary HTML5 objects the we are going to use
+					document.getElementById('UploadButton').addEventListener('click', StartUpload);
+					document.getElementById('FileBox').addEventListener('change', FileChosen);
+				}
+				else
+				{
+					document.getElementById('UploadArea').innerHTML = "Your Browser Doesn't Support The File API Please Update Your Browser";
+				}
+			}
+			var SelectedFile;
+			var Name;
+                        var fileSize;
+                        var ws = new WebSocket("ws://178.158.131.41:8800/websocket"); // IP
+                        var PR;
+                        var sPR;
+
+			function FileChosen(evnt) {
+		                SelectedFile = evnt.target.files[0];
+				document.getElementById('NameBox').value = SelectedFile.name;
+                                fileSize = SelectedFile.size;
+
+		        }
+
+
+			
+                        //ws.binaryType = 'arraybuffer';
+                        ws.onopen = function() {
+                            console.log("connection was established");
+                        };
+
+
+			function StartUpload(){
+				if(document.getElementById('FileBox').value != "")
+				{
+					//FReader = new FileReader();
+					Name = document.getElementById('NameBox').value;
+					var Content = "<span id='NameArea'>Uploading " + SelectedFile.name + " as " + Name + "</span>";
+					Content += '<div id="ProgressContainer"><div id="ProgressBar"></div></div><span id="percent">50%</span>';
+                                        if (SelectedFile.size/1000 < 1.0) {
+					   Content += "<span id='Uploaded'> - <span id='MB'>0</span>/" + fileSize + " B</span>";
+                                        } else {
+                                           Content += "<span id='Uploaded'> - <span id='MB'>0</span>/" + fileSize / 1000000.0 + " MB</span>";
+                                        };
+					document.getElementById('UploadArea').innerHTML = Content;
+                                        
+                                        ws.send(JSON.stringify({'Process': 'InFile', 'Name' : Name, 'Size' : fileSize }));
+                                        totalChunks = Math.ceil((fileSize/chunkSize), chunkSize);
+                                        //console.log(totalChunks)
+                                        sPR = 0;
+                                        PR = (fileSize/totalChunks)/1000000.0
+                                        UpdateBar(0);
+                                        console.log("Event Start");
+					
+                                        
+				}
+				else
+				{
+					alert("Нужно выбрать файл");
+				}
+			}
+
+			function UpdateBar(percent){
+                                document.getElementById('ProgressBar').style.width = percent + '%';
+				document.getElementById('percent').innerHTML = (Math.round(percent*100.0)/100.0) + '%';
+                                //var MBDone = Math.round(((percent/100.0) * SelectedFile.size) / 1048576.0)   
+                                sPR = sPR + PR;                  
+                                var MBDone = sPR-PR;
+
+				document.getElementById('MB').innerHTML = MBDone;
+			}
+
+                        var chunkSize = 1024.0 * 1024.0;
+                        var currentChunk = 1.0;
+                        var totalChunks;
+                        ws.onmessage = function(data) {
+                                if (currentChunk <= totalChunks) {
+                                        
+                                        var offset = (currentChunk-1.0) * chunkSize;
+                                        
+                                        var currentFilePart = SelectedFile.slice(offset, (offset+chunkSize));
+                                        var reader = new FileReader();
+                                        reader.onload = function (e) {
+                                               //console.log("ReadeR", offset/1000000.0 )//, e.target.result);
+                                               UpdateBar(Math.ceil((currentChunk*100.0)/totalChunks));
+                                               ws.send(JSON.stringify({'Process':'Upload', 'Name' : 'more', 'Data' : e.target.result }));
+                                               currentChunk++;
+                                        }
+                                        reader.readAsDataURL(currentFilePart) //readAsText(currentFilePart)//, "UTF-8")
+                                        //readAsBinaryString(currentFilePart);
+                                        //console.log("Event Upload", currentFilePart);
+                                        //currentChunk++;
+                                        //ws.send(JSON.stringify({'Upload': { 'Name' : 'st', 'Data' : "SSS" }}));
+                                 
+
+                                } else {
+                                        console.log("Event Done");
+                                        ws.send(JSON.stringify({'Process':'Done', 'Name' : 'more', 'Data' : "SSS" }));
+                                        
+                                }
+                        };
+
+
+
+		</script>
+		<style type="text/css" media="screen">
+
+
+h2 {
+	font-size: 40px;
+	margin-top: 6px;
+	margin-bottom: 10px;
+}
+
+#Thumb {
+	max-width: 230px;
+	max-height: 130px;
+}
+
+#ProgressContainer {
+	width: 396px;
+	height: 36px;
+	background: #F8F8F8;
+	margin-top: 14px;
+	border: 1px solid #E8E8E8;
+	border-top: 1px solid #D8D8D8;
+
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding: 2px;
+}
+
+#ProgressBar {
+	height: 100%;
+	width: 0%;
+
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background: #507299;
+}
+
+#UploadBox {
+    font-family: Arial;
+	background: #FFF;
+	padding: 20px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -200px;
+	margin-top: -150px;
+	height: 200px;
+	width: 400px;
+	border: 1px solid #DFDFDF;
+
+	-webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+
+	-webkit-border-radius: 11px;
+	-moz-border-radius: 11px;
+	border-radius: 11px;
+}
+
+button.Button {
+    font-size: 18px;
+    color: #ffffff;
+    padding: 8px 30px;
+    background: #507299;
+    -moz-border-radius: 5px;
+    border-radius: 6px;
+    border: none;
+    -moz-box-shadow: 0px 1px 3px rgba(000,000,000,0.5), inset 0px 0px 3px rgba(255,255,255,0.4);
+    margin: 15px auto;
+    display: block;
+    cursor: pointer;
+}
+input {
+	margin-top: 10px;
+	margin-bottom: 8px;
+}
+
+input[type=text] {
+	border: 1px solid #CDCDCD;
+	border-top: 1px solid #676767;
+
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font-size: 18px;
+	padding: 2px;
+	width: 300px;
+	margin-left: 10px;
+}
+
+		</style>
+<body style="margin: 0;color: #9d9d9d;background: #fafafa!important;font-family:Arial;">
+		<div id="UploadBox">
+			<h2>Загрузчик</h2>
+			<span id='UploadArea'>
+				<label for="FileBox">Выберите файл: </label><input type="file" id="FileBox"><br>
+				<label for="NameBox">Имя: </label><input type="text" id="NameBox" placeholder="URL ссылка"><br>
+				<button	type='button' id='UploadButton' class='Button'>Загрузить</button>
+			</span>
+		</div>
+    </body>
