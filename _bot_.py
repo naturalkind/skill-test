@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 
-#openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl2/cert.key -out ssl2/cert.crt
+#openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/cert.key -out ssl/cert.crt
 acc_key = "" 
 files = {'certificate': open('ssl/cert.crt', 'rb')}
 
