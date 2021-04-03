@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import requests
 import os, time
-access_token = ""
+access_token = "261beb8cbe14581fd4c8edf0805d505a05d439816bc27beedd9051b75ce84e768a100d149727811aeb5a8"
 def get_a():
     vk_id = "67267231" # skynet
-    #vk_id = "47376425&" #цифровая копия
+    #vk_id = "47376425" #цифровая копия
     URL = f"https://api.vk.com/method/video.getAlbums?owner_id=-{vk_id}&access_token={access_token}&v=5.92"
     r = requests.get(url = URL) 
     data = r.json() 
