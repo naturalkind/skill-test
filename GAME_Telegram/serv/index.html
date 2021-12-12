@@ -1,0 +1,57 @@
+<a href="/" style="position:absolute;">назад</a>
+<div id="servimg" style="display: block;position: relative;margin: 0 auto;"></div>
+<div style="width:600px;margin:0 auto;">
+<ul style="width:600px;margin:0 auto;padding-left: 0;">
+<h3>Сообщение telegram: <input type="text" id="title"></h3>
+</ul>
+
+<button id="send" onclick="send()" style="display:block;width: 100%;background: #b9b9b9;border-radius: 5px;border:none;padding: 5px;margin-top: 10px;">Отправить</button>
+</div>
+
+<style>
+body {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+}
+#bd:hover {background:#d87373;color:white;}
+#b_info{
+display: none;
+position: absolute;
+background: #f1f1f1;
+width: 676px;
+left: 0;
+top: 0;
+bottom: 0;
+right: 0;
+margin: 0 auto;
+overflow: auto;
+}
+#CL {
+    margin: 0 auto;
+    display: block;
+}
+</style>
+<script>
+var input = document.getElementById("input");
+
+function send(){
+	console.log("ok");
+	var http = new XMLHttpRequest();
+	http.open("POST", "http://178.158.131.41:8800/");
+	http.setRequestHeader("Content-type","application/json; charset=utf-8");
+        var ti = document.getElementById("title").value;
+	var work = JSON.stringify({"text":ti});
+	console.log(work);
+	http.onreadystatechange = function (){
+		if(http.readyState == 4){
+		        console.log(http.responseText)
+                        //var s = JSON.parse(http.responseText);
+			//alert(s["text"]);
+                        }};
+			http.send(work);
+		};
+
+</script>
