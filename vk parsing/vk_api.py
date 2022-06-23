@@ -1,4 +1,19 @@
 # -*- coding: utf-8 -*-
+"""
+1 скачать все гуппы вк
+2 с каждой группы выбрать самые популярные посты
+3 сранивать с лучшими из группы и выбрать 5-10
+4 к-средних среднюю оценку
+5 выбрать лучшее из лучших
+6 обучить сеть и сравнивать по к средних цвета
+бот постит самые лучшие посты из заданных групп
+
+Что мне понадобиться
+словарь a_dict = {} - ключ имя картинки, лайки просмотры
+сохранять в папку с подпапками имени группы или ид
+
+"""
+
 import requests
 import os, time, json
 from datetime import datetime,  date
@@ -9,6 +24,7 @@ access_token = ""
 
 
 # Загрузка файлов
+
 class DATA(object):
    def __init__(self):
        self.file = {}
@@ -46,8 +62,10 @@ def get_photo(idx):
           except KeyError:
              print "ERROR"
 
+               
+# ПОЛУЧАЮ КАТАЛОГ ГРУПП               
 def get_list_groups()
-    # ПОЛУЧАЮ КАТАЛОГ ГРУПП
+    
     URL = f"https://api.vk.com/method/groups.getCatalogInfo?&count=100&offset=200&access_token={access_token}&v=5.92"
 
     r = requests.get(url = URL) 
